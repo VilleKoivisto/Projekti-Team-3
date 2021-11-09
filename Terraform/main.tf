@@ -40,10 +40,24 @@ resource "google_compute_subnetwork" "public-subnetwork" {
     network = google_compute_network.vpc_network.name
 }
 
+# Firewall-resurssit
+
+# SSH-yhteydet auki
+resource "google_compute_firewall" "allow_ssh" {
+  name        = "allow-ssh"
+  network     = google_compute_network.vpc_network.name
+  direction   = "INGRESS"
+  allow {
+    protocol = "tcp"
+    ports    = ["22"]
+  }
+  target_tags = ["ssh-enabled"]
+}
+
 # Luo SQL database instancen annetuilla tiedoilla
 
-resource "google_sql_database_instance" "Postgresqlinstanssi" {
-  name             = "postgresqlinstanssi5367415439"
+resource "google_sql_database_instance" "PostgresqlYenCHQMtfr" { # Jos cloud sql instanssi on tehty ja deletoitu/destroyattu, ei voi käyttää samaa instanssin nimeä viikkoon!
+  name             = "postgresqlinstanssi"
   database_version = "POSTGRES_13"
   region           = var.region
 
@@ -55,13 +69,13 @@ resource "google_sql_database_instance" "Postgresqlinstanssi" {
 resource "google_sql_user" "postgres" {
   project  = var.project
   name     = var.sql_name
-  instance = google_sql_database_instance.Postgresqlinstanssi.name
+  instance = google_sql_database_instance.PostgresqlYenCHQMtfr.name
   password = var.sql_password
 }
 
 provider "postgresql" {
   scheme   = "gcppostgres"
-  host     = google_sql_database_instance.Postgresqlinstanssi.connection_name
+  host     = google_sql_database_instance.PostgresqlYenCHQMtfr.connection_name
   username = google_sql_user.postgres.name
   password = google_sql_user.postgres.password
 }
