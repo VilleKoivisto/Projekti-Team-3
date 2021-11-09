@@ -45,7 +45,7 @@ subjectdate = date.today()
 
 ## säätietojen haku
 
-api_key = "482cecd5122406c3e1ab27a830830dc3"
+api_key = "xxx"
 zippikoodi = "00100" ## Helsinki / Kaisaniemi (todnäk)
 countrykoodi = "fi"
 langikoodi = "fi"
