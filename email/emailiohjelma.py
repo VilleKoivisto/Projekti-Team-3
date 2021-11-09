@@ -16,7 +16,7 @@ server.ehlo()
 server.starttls()
 server.ehlo()
 
-## avaa emailin tiedot (käyttis ja salis) erillisestä tiedostosta, joka on gitignoressa
+## avaa emailin tiedot (käyttis ja salis) ja api keyn erillisestä tiedostosta, joka on gitignoressa
 
 with open(".emailsalaisuuksia","r") as f:
     lines2 = []
@@ -25,10 +25,12 @@ with open(".emailsalaisuuksia","r") as f:
         lines2.append(lines[i].strip('\n'))
     emaili = lines2[0]
     passu = lines2[1]
+    openweatherapi = lines2[2]
     f.close()
 
 # print(emaili) # testiprinttejä
 # print(passu) # testiprinttejä
+# print(openweatherapi) # testiprinttejä
 
 ## kirjausdata mock, tähän tulee myöhemmin haku databasesta siltä päivältä milloin CRON-jobi suoritetaan
 ## tähän myöhemmin looppi, että tunkee kaikki databasen tietyn päivän tiedot listaan tai sanakirjaan,
@@ -45,7 +47,7 @@ subjectdate = date.today()
 
 ## säätietojen haku
 
-api_key = "xxx"
+api_key = openweatherapi
 zippikoodi = "00100" ## Helsinki / Kaisaniemi (todnäk)
 countrykoodi = "fi"
 langikoodi = "fi"
