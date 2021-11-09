@@ -32,34 +32,40 @@ def validoi_data(args):
 
     # Tarkistetaan onko nimi merkkijono
     if kirjaukset[0].isdigit():
-        print(f"Käyttäjänimi ei voi olla numero: {kirjaukset[0]}")
+        print(f"\nKäyttäjänimi ei voi olla numero: {kirjaukset[0]}\n")
         
         return False
 
     # tarkistetaan päivämäärien formaatti
     if not tarkista_pvm(kirjaukset[1], kirjaukset[3]):
-        print(f"Aloitus- tai lopetuspäivämäärä on väärässä formaatissa: {kirjaukset[1]}, {kirjaukset[3]}")
-        print("Oikea formaatti on: pp/kk/vvvv")
+        print(f"\nAloitus- tai lopetuspäivämäärä on väärässä formaatissa: {kirjaukset[1]}, {kirjaukset[3]}")
+        print("Oikea formaatti on: pp/kk/vvvv\n")
 
         return False
 
     # tarkistetaan aikojen formaatti
     if not tarkista_aika(kirjaukset[2], kirjaukset[4]):
-        print(f"Aloitus- tai lopetusaika on väärässä formaatissa: {kirjaukset[2]}, {kirjaukset[4]}")
-        print("Oikea formaatti on: hh:mm")
+        print(f"\nAloitus- tai lopetusaika on väärässä formaatissa: {kirjaukset[2]}, {kirjaukset[4]}")
+        print("Oikea formaatti on: hh:mm\n")
 
         return False
 
     # Tarkistetaan onko projektin nimi merkkijono
     if kirjaukset[5].isdigit():
-        print(f"Projektin nimi ei voi olla numero: {kirjaukset[5]}")
+        print(f"\nProjektin nimi ei voi olla numero: {kirjaukset[5]}\n")
         
         return False
 
     # Tarkistetaan onko selite merkkijono
     if kirjaukset[6].isdigit():
-        print(f"Selite ei voi olla numero: {kirjaukset[6]}")
+        print(f"\nSelite ei voi olla numero: {kirjaukset[6]}\n")
         
+        return False
+
+    # Tarkistetaan, että alku_pvm aikaisemmin kuin loppupvm
+    if not vertaa_pvm(kirjaukset[1], kirjaukset[3]):
+        print("\nLopetuspäivämäärä ei voi olla aikaisemmin kuin aloituspäivämäärä.\n")
+
         return False
 
     return True
@@ -90,13 +96,13 @@ def tarkista_aika(*args):
     for arg in args:
         try:
             tunti, minuutti = arg.split(":")
+
+            # value error -testi:
             tunti = int(tunti)
             minuutti = int(minuutti)
 
-            if tunti < 0 or tunti > 23:
-                return False
-
-            elif minuutti < 0 or minuutti > 59:
+            # arvoaluetesti:
+            if tunti < 0 or tunti > 23 or minuutti < 0 or minuutti > 59:
                 return False
 
         except ValueError:
@@ -105,11 +111,32 @@ def tarkista_aika(*args):
     return True
 
 
+def vertaa_pvm(alku_pvm, loppu_pvm):
+    """ Vertaa päivämääriä:
+        aloituspäivän oltava ennen lopetuspäivää
+    """
+
+    paiva, kuukausi, vuosi = alku_pvm.split("/")
+    alku_dto = datetime(int(vuosi), int(kuukausi), int(paiva))
+
+    paiva, kuukausi, vuosi = loppu_pvm.split("/")
+    loppu_dto = datetime(int(vuosi), int(kuukausi), int(paiva))
+
+    if alku_dto > loppu_dto:
+        return False
+
+    return True
+
+
 def main(*args):
     """ Pääfunktio josta käsin suoritetaan muut jutut """
 
     # Ohjataan komentoriviargumentit validointifunktioon
-    validoi_data(args)
+    if not validoi_data(args):
+        return
+
+    else:
+        print("\Lisätään rivi tietokantaan...\n")
 
 
 if __name__ == "__main__":
