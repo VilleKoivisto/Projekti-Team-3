@@ -1,4 +1,5 @@
 database.ini
+.emailsalaisuuksia
 
 **/.terraform/*
 *.tfstate
