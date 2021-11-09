@@ -6,9 +6,9 @@ variable "project" {}
 
 variable "credentials_file" {}
 
-#variable "sql_name" {}
+variable "sql_name" {}
 
-#variable "sql_password" {}
+variable "sql_password" {}
 
 # Nämä määritellään tässä:
 variable "region" {
