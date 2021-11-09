@@ -32,7 +32,7 @@ resource "google_compute_network" "vpc_network" {
 # Luo tuntikirjaus-vpc:lle aliverkon tuntikirjaus-sub-fin, jossa 2 (käytettävissä olevaa) ip-osoitetta
 resource "google_compute_subnetwork" "public-subnetwork" {
     name = "tuntikirjaus-sub-fin"
-    ip_cidr_range = "10.0.0.0/30"
+    ip_cidr_range = "10.0.0.0/29"
     region = var.region
     network = google_compute_network.vpc_network.name
 }
