@@ -12,9 +12,9 @@ variable "sql_password" {}
 
 # Nämä määritellään tässä:
 variable "region" {
-    default = "us-central1"
+    default = "europe-north1"
 }
 
 variable "zone" {
-    default = "us-central1-c"
+    default = "europe-north1-b"
 }

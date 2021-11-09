@@ -22,3 +22,17 @@ provider "google" {
 }
 
 # Projektin resurssit:
+# Luo VPC:n nimeltä tuntikirjaus-vpc
+resource "google_compute_network" "vpc_network" {
+  project = var.project
+  name = "tuntikirjaus-vpc"
+  auto_create_subnetworks = false
+}
+
+# Luo tuntikirjaus-vpc:lle aliverkon tuntikirjaus-sub-fin, jossa 2 (käytettävissä olevaa) ip-osoitetta
+resource "google_compute_subnetwork" "public-subnetwork" {
+    name = "tuntikirjaus-sub-fin"
+    ip_cidr_range = "10.0.0.0/30"
+    region = var.region
+    network = google_compute_network.vpc_network.name
+}
