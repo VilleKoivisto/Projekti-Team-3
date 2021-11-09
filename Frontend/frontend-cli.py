@@ -39,7 +39,7 @@ def validoi_data(args):
     # tarkistetaan päivämäärien formaatti
     if not tarkista_pvm(kirjaukset[1], kirjaukset[3]):
         print(f"\nAloitus- tai lopetuspäivämäärä on väärässä formaatissa: {kirjaukset[1]}, {kirjaukset[3]}")
-        print("Oikea formaatti on: pp/kk/vvvv\n")
+        print("Oikea formaatti on: pp-kk-vvvv\n")
 
         return False
 
@@ -75,15 +75,15 @@ def tarkista_pvm(*args):
     """ Tarkistaa, onko pvm oikeassa muodossa 
         (validi datetime-objekti)
     """
-    
-    for arg in args:
-        paiva, kuukausi, vuosi = arg.split("/")
 
-        try:
-            datetime(int(vuosi), int(kuukausi), int(paiva))
+    try:
+        for arg in args:
+            paiva, kuukausi, vuosi = arg.split("-")
 
-        except ValueError:
-            return False
+        datetime(int(vuosi), int(kuukausi), int(paiva))
+
+    except ValueError:
+        return False
         
     return True
 
@@ -93,8 +93,8 @@ def tarkista_aika(*args):
         (validi datetime-objekti)
     """
     
-    for arg in args:
-        try:
+    try:
+        for arg in args:
             tunti, minuutti = arg.split(":")
 
             # value error -testi:
@@ -105,8 +105,8 @@ def tarkista_aika(*args):
             if tunti < 0 or tunti > 23 or minuutti < 0 or minuutti > 59:
                 return False
 
-        except ValueError:
-            return False
+    except ValueError:
+        return False
 
     return True
 
@@ -116,10 +116,10 @@ def vertaa_pvm(alku_pvm, loppu_pvm):
         aloituspäivän oltava ennen lopetuspäivää
     """
 
-    paiva, kuukausi, vuosi = alku_pvm.split("/")
+    paiva, kuukausi, vuosi = alku_pvm.split("-")
     alku_dto = datetime(int(vuosi), int(kuukausi), int(paiva))
 
-    paiva, kuukausi, vuosi = loppu_pvm.split("/")
+    paiva, kuukausi, vuosi = loppu_pvm.split("-")
     loppu_dto = datetime(int(vuosi), int(kuukausi), int(paiva))
 
     if alku_dto > loppu_dto:
@@ -136,7 +136,7 @@ def main(*args):
         return
 
     else:
-        print("\Lisätään rivi tietokantaan...\n")
+        print("\nLisätään rivi tietokantaan...\n")
 
 
 if __name__ == "__main__":
@@ -160,4 +160,4 @@ if __name__ == "__main__":
 
 
 # TESTAUKSEEN:
-# esimerkkikomento: python .\frontend-cli.py Ville 1/11/2021 8:30 2/11/2021 17:45 Awa-projekti "tein mitä tein"
+# esimerkkikomento: python .\frontend-cli.py Ville 1-11-2021 8:30 2-11-2021 17:45 Awa-projekti "Pääasia että päivä kuluu..."
