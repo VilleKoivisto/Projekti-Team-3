@@ -11,6 +11,7 @@ Tuntikirjaukset yms. annetaan parametreinä pääfunktiolle
 import argparse
 import psycopg2
 from datetime import datetime
+from tee_kysely import sql_lisaa_rivi
 
 
 def validoi_data(args):
@@ -137,6 +138,17 @@ def main(*args):
 
     else:
         print("\nLisätään rivi tietokantaan...\n")
+
+        kirjaukset = []
+
+        for arg in args:
+            kirjaukset.append(arg)
+
+        if not sql_lisaa_rivi(kirjaukset[0], kirjaukset[1], kirjaukset[2], kirjaukset[3], kirjaukset[4], kirjaukset[5], kirjaukset[6]):
+            print("\nRiviä ei voitu lisätä...\n")
+
+        else:
+            print("\nRivi lisätty tietokantaan.\n")
 
 
 if __name__ == "__main__":

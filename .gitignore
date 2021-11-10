@@ -1,5 +1,6 @@
 database.ini
-
+**database*
+data/
 **/.terraform/*
 *.tfstate
 *.tfstate.*
@@ -87,3 +88,4 @@ dmypy.json
 .pyre/
 .pytype/
 cython_debug/
+__init*
