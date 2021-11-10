@@ -1,0 +1,4 @@
+src/data/database.ini
+**__pycache__
+venv/
+.idea/
