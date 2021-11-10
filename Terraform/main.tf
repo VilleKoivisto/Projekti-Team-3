@@ -42,7 +42,7 @@ resource "google_compute_subnetwork" "public-subnetwork" {
 resource "google_compute_instance" "vm_instance" {
   name         = "tuntikirjaus-instanssi"
   machine_type = "n1-standard-1"
-  #tags = ["tag", "tag"]
+  tags = ["ssh-enabled"]
   boot_disk {
     initialize_params {
       image = "debian-cloud/debian-9"
@@ -54,6 +54,9 @@ resource "google_compute_instance" "vm_instance" {
     subnetwork = google_compute_subnetwork.public-subnetwork.name
     access_config {
         }
+  }
+  metadata = {
+    enable-oslogin = "TRUE"
   }
   metadata_startup_script = file("startupscript.sh")
   allow_stopping_for_update = true
