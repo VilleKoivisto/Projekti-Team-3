@@ -1,7 +1,5 @@
 # Projekti / ryhmä 3 / Terraform-template
 # -----------------------------------------------
-#TO-DO Lisää firewall-sääntö-tägit instanssiin, kun firewall on luotu! (laini viittä vaille valmiina odottamassa)
-
 # Templaten muuttujat määritellään tiedostossa "variables.tf"
 
 # Provider-tiedot:
@@ -33,7 +31,7 @@ resource "google_compute_network" "vpc_network" {
   auto_create_subnetworks = false
 }
 
-# Luo tuntikirjaus-vpc:lle aliverkon tuntikirjaus-sub-fin, jossa 2 (käytettävissä olevaa) ip-osoitetta
+# Luo tuntikirjaus-vpc:lle aliverkon tuntikirjaus-sub-fin
 resource "google_compute_subnetwork" "public-subnetwork" {
     name = "tuntikirjaus-sub-fin"
     ip_cidr_range = "10.0.0.0/27"
