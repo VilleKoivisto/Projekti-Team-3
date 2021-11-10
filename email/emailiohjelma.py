@@ -1,77 +1,44 @@
-## kirjastot
-
-# sähköposti
 import smtplib
-# sää
-import requests
-import json
+from email.message import EmailMessage
+
 # muut
 from datetime import date
+from luo_raportti import luo
+from hae_login_data import hae_data
 
-## configuroi emailin lähetyksen
 
-server = smtplib.SMTP('smtp.gmail.com', 587)
+def main():
+    """ Backend: tuntikirjauksista raportin lähettävä email-ohjelma """
+    
+    # haetaan login-data
+    lahettaja_email, vast_ot_email, passu, openweatherapi = hae_data()
 
-server.ehlo()
-server.starttls()
-server.ehlo()
+    # Luodaan raportti
+    kirjausraportti = luo(openweatherapi)
 
-## avaa emailin tiedot (käyttis ja salis) ja api keyn erillisestä tiedostosta, joka on gitignoressa
+    # alustetaan yhteys
+    # Google smtp:
+    # server = smtplib.SMTP('smtp.gmail.com', 587)
+    server = smtplib.SMTP('smtp.office365.com', 587)
 
-with open(".emailsalaisuuksia","r") as f:
-    lines2 = []
-    lines = f.readlines()
-    for i in range(len(lines)): ## poistaa newlinet
-        lines2.append(lines[i].strip('\n'))
-    emaili = lines2[0]
-    passu = lines2[1]
-    openweatherapi = lines2[2]
-    f.close()
+    server.ehlo()
+    server.starttls()
+    server.ehlo()
 
-# print(emaili) # testiprinttejä
-# print(passu) # testiprinttejä
-# print(openweatherapi) # testiprinttejä
+    # koostetaan sähköposti
+    viesti = EmailMessage()
+    viesti.set_content(kirjausraportti)
 
-## kirjausdata mock, tähän tulee myöhemmin haku databasesta siltä päivältä milloin CRON-jobi suoritetaan
-## tähän myöhemmin looppi, että tunkee kaikki databasen tietyn päivän tiedot listaan tai sanakirjaan,
-## että ne voi kirjoittaa spostiviestiin
+    server.login(lahettaja_email, passu)
 
-aloituspvm = "9.11.2021"
-aloitusaika = "08:00"
-lopetuspvm = "9.11.2021"
-lopetusaika = "16:00"
-projektinimi = "Projekti"
-selite = "Sikasaikku"
-tuntisumma = 25
-subjectdate = date.today()
+    viesti['Subject'] = f"Työtuntiraportti: {date.today()}"
+    viesti['From'] = lahettaja_email
+    viesti['To'] = vast_ot_email
 
-## säätietojen haku
+    server.send_message(viesti)
 
-api_key = openweatherapi
-zippikoodi = "00100" ## Helsinki / Kaisaniemi (todnäk)
-countrykoodi = "fi"
-langikoodi = "fi"
-url = "https://api.openweathermap.org/data/2.5/weather?zip=%s,%s&appid=%s&units=metric" % (zippikoodi, countrykoodi, api_key)
-response = requests.get(url)
-data = json.loads(response.text)
-lampotila_max = data['main']['temp_max']
+    server.quit()
 
-## varsinainen sähköpostin lähetys, tähän myöhemmin looppi että iteroi spostiviestiin kaikki kirjaukset listasta
 
-server.login(emaili, passu)
-sender_email = emaili
-receiver_email = "voicehaustmi@gmail.com"
-message = f"Subject: Emailraportti, {subjectdate}" \
-            f"\n" + "\n" \
-            f"Aloituspvm- ja aika: {aloituspvm}, klo {aloitusaika} \n" \
-            f"Lopetuspvm- ja aika: {lopetuspvm}, klo {lopetusaika} \n" \
-            f"Projektinimi: {projektinimi} \n" \
-            f"Selite: {selite}" \
-            f"\n" + "\n" \
-            f"Tuntisumma: {tuntisumma}" \
-            f"\n" \
-            f"------------------------" \
-            f"\n" \
-            f"Hki (Kaisaniemen havaintoasema) celsiukset on {lampotila_max} C"
-
-server.sendmail(sender_email, receiver_email, message)
+if __name__ == "__main__":
+    main()
