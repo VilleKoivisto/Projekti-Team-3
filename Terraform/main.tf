@@ -1,5 +1,6 @@
 # Projekti / ryhmä 3 / Terraform-template
 # -----------------------------------------------
+#TO-DO Lisää firewall-sääntö-tägit instanssiin, kun firewall on luotu! (laini viittä vaille valmiina odottamassa)
 
 # Templaten muuttujat määritellään tiedostossa "variables.tf"
 
@@ -100,4 +101,27 @@ provider "postgresql" {
   host     = google_sql_database_instance.PostgresqlYenCHQMtfr.connection_name
   username = google_sql_user.postgres.name
   password = google_sql_user.postgres.password
+
+# Luo frontend/backend-instanssin
+resource "google_compute_instance" "vm_instance" {
+  name         = "tuntikirjaus-instanssi"
+  machine_type = "n1-standard-1"
+  tags = ["ssh-enabled"]
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-9"
+    }
+  }
+
+  network_interface {
+    network = google_compute_network.vpc_network.name
+    subnetwork = google_compute_subnetwork.public-subnetwork.name
+    access_config {
+        }
+  }
+  metadata = {
+    enable-oslogin = "TRUE"
+  }
+  metadata_startup_script = file("startupscript.sh")
+  allow_stopping_for_update = true
 }
