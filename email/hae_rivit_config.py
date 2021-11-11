@@ -2,7 +2,7 @@
 
 from configparser import ConfigParser
 
-def parseri(tiedosto='.\data\database.ini', kentta='postgresql'):
+def parseri(tiedosto='./data/database.ini', kentta='postgresql'):
     """ Käsittele asetustiedosto: database.ini """
 
     parseri = ConfigParser()
