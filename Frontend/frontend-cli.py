@@ -4,12 +4,7 @@ Frontend vastaanottaa käyttäjältä tuntikirjauksia ja tallentaa ne kantaan (v
 Tuntikirjaukset yms. annetaan parametreinä pääfunktiolle
 """
 
-#TODO: tietokantaan yhteys
-#TODO: syöte tietokantaan
-
-
 import argparse
-import psycopg2
 from datetime import datetime
 from tee_kysely import sql_lisaa_rivi
 
@@ -172,4 +167,4 @@ if __name__ == "__main__":
 
 
 # TESTAUKSEEN:
-# esimerkkikomento: python .\frontend-cli.py Ville 1-11-2021 8:30 2-11-2021 17:45 Awa-projekti "Pääasia että päivä kuluu..."
+# esimerkkikomento: python3 frontend-cli.py Ville 11-11-2021 8:30 11-11-2021 17:45 joku-projekti "Pääasia että päivä kuluu..."
