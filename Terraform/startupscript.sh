@@ -6,7 +6,7 @@ sudo apt-get -y install postgresql-client
 sudo pip install psycopg2-binary
 sudo apt-get install unzip
 
-#haetaan bucketista zip-tiedostot ja unzipataan ne
+#haetaan bucketista zip-tiedostot, unzipataan ne
 sudo gsutil cp gs://projektikoodit/Backend.zip .
 sudo gsutil cp gs://projektikoodit/Frontend.zip .
 sudo unzip Backend.zip
