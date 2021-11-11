@@ -3,8 +3,8 @@
 sudo apt-get update
 sudo apt-get -y install --upgrade python3-pip
 sudo apt-get -y install postgresql-client
-sudo pip install psycopg2-binary
-sudo pip install requests
+sudo pip3 install psycopg2-binary
+sudo pip3 install requests
 sudo apt-get install unzip
 
 
