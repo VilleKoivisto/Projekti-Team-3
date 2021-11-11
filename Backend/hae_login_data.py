@@ -1,5 +1,11 @@
+""" Hakee kirjautumisdatan """
+
+import os
+
 def hae_data():
-    with open(".emailsalaisuuksia","r") as f:
+    koti = os.path.expanduser('~')
+
+    with open(f"{koti}/backendfolder/.emailsalaisuuksia","r") as f:
         lines2 = []
         lines = f.readlines()
 

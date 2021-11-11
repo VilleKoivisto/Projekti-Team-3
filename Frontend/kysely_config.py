@@ -1,8 +1,11 @@
 """ Init-tiedoston parseri """
 
 from configparser import ConfigParser
+import os
 
-def parseri(tiedosto='./data/database.ini', kentta='postgresql'):
+koti = os.path.expanduser('~')
+
+def parseri(tiedosto=f'{koti}/frontendfolder/data/database.ini', kentta='postgresql'):
     """ Käsittele asetustiedosto: database.ini """
 
     parseri = ConfigParser()
